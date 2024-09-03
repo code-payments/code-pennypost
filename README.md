@@ -44,7 +44,7 @@ file and fill in the necessary values.
 cp backend/example.env backend/.env
 ```
 
-To run Pennypost, use the following command:
+To run Pennypost, use the following commands:
 
 ```bash
 make install
