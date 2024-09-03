@@ -21,19 +21,12 @@ package in the `backend` and `frontend` packages.
 ## HTTP/1 First Design
 
 One notable implementation feature of Pennypost is that we don't force the
-useage of websockets or sockets for services. Typically, gRPC services require
-the use of HTTP/2. Instead, we use a simple binary request/response pattern over
-HTTP/1. This is very different from what projects like `es-connect` use. We
-wanted to ensure that an upgrade path to `HTTP/2` was possible, but not
-required.
+useage of websockets or sockets for services, as is usually the case with 
+`gRPC` or `es-connect`. By avoiding `HTTP/2`, we can take advantage of 
+traditional load balancing infrastructure. This is the same pattern used 
+by the Code SDK.
 
-By avoiding `HTTP/2`, Pennypost can take advantage of traditional load balancing
-infrastructure.
-
-The `HTTP/1` protocol is defined in the `proto/network.prot` file. The services
-themselves are defined in the `../packages/backend/src/service.ts` file.
-
-This is the same pattern used by the Code SDK.
+The protocol is defined in the [network.proto](https://github.com/code-payments/code-pennypost/blob/main/packages/api/proto/network.proto) file.
 
 Example:
 
