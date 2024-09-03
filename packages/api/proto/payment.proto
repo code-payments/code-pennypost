@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package api;
+
+service PaymentIntentService {
+    rpc Create(PaymentIntentCreateRequest) returns (PaymentIntentCreateResponse) {}
+}
+
+message PaymentIntent {
+    string intent_id = 1;
+    string item_id = 2;
+
+    string destination = 4;
+    string price = 5;
+    string currency = 6;
+}
+
+message PaymentIntentCreateRequest {
+    string item_id = 1;
+}
+
+message PaymentIntentCreateResponse {
+    Result result = 1;
+    string client_secret = 2;
+
+    enum Result {
+        OK = 0;
+        INVALID_REQUEST = 1;
+        UNKNOWN_ERROR = 2;
+        ALREADY_EXISTS = 3;
+    }
+}

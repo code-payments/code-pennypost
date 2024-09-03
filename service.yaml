@@ -1,0 +1,16 @@
+version: "1.0"
+service:
+    name: "micropaywall-service"
+profiles:
+    codedev:
+        deploy_bucket: code-codedeploy-dev
+        environment:
+            ENVIRONMENT: dev
+            LOG_LEVEL: debug
+            S3_BUCKET: code-infra-dev
+    codeprod:
+        deploy_bucket: code-codedeploy-prod
+        environment:
+            ENVIRONMENT: prod
+            LOG_LEVEL: debug
+            S3_BUCKET: code-infra-prod

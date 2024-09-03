@@ -1,0 +1,23 @@
+{
+  "name": "@code-pennypost/api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rm -rf ./src/gen/*",
+    "gen": "npm run clean && buf generate proto"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@bufbuild/protobuf": "^1.5.1",
+    "@connectrpc/connect": "^1.1.4",
+    "@connectrpc/connect-web": "^1.1.4"
+  },
+  "devDependencies": {
+    "@bufbuild/buf": "^1.28.1",
+    "@bufbuild/protoc-gen-es": "^1.5.1",
+    "@connectrpc/protoc-gen-connect-es": "^1.1.4"
+  }
+}

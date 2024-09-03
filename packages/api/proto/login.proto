@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package api;
+
+service LoginIntentService {
+    rpc Create(LoginIntentCreateRequest) returns (LoginIntentCreateResponse) {}
+}
+
+message LoginIntent {
+    string intent_id = 1;
+}
+
+message LoginIntentCreateRequest {
+    string nonce = 1;
+}
+
+message LoginIntentCreateResponse {
+    Result result = 1;
+    string client_secret = 2;
+
+    enum Result {
+        OK = 0;
+        INVALID_REQUEST = 1;
+        UNKNOWN_ERROR = 2;
+        ALREADY_EXISTS = 3;
+    }
+}

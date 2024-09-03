@@ -1,0 +1,32 @@
+/* ./src/index.css */
+@import 'medium-editor/dist/css/medium-editor.css';
+@import 'vuejs-medium-editor/dist/themes/default.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: "Inter var";
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: optional;
+    src: url(./assets/fonts/Inter-roman.var.woff2) format("woff2");
+  }
+}
+
+:root {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: #555;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}

@@ -1,0 +1,117 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  codeAddress String @unique
+
+  name   String?
+  bio    String?
+  avatar Bytes?
+
+  data    Data[]
+  post    Post[]
+  session Session[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  intent   Intent @relation(fields: [intentId], references: [id])
+  intentId String
+
+  hash   String
+  source String
+  expiry String
+
+  userAgent String
+  ip        String
+
+  @@unique([intentId, source])
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  owner   User   @relation(fields: [ownerId], references: [id])
+  ownerId String
+
+  title String
+  short String
+  slug  String @unique
+
+  price          String
+  paymentAddress String
+
+  content   Data   @relation(fields: [contentId], references: [id], name: "post_content")
+  contentId String
+
+  image   Data?   @relation(fields: [imageId], references: [id], name: "post_image")
+  imageId String?
+
+  paymentIntent PaymentIntent[]
+}
+
+model Data {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  owner   User   @relation(fields: [ownerId], references: [id])
+  ownerId String
+
+  key   String
+  value Bytes
+  hash  String
+
+  post_content Post[] @relation("post_content")
+  post_image   Post[] @relation("post_image")
+}
+
+model Intent {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  status       String
+  clientSecret String
+
+  relatedUser String?
+
+  loginIntent   LoginIntent?
+  paymentIntent PaymentIntent?
+
+  session Session[]
+}
+
+model LoginIntent {
+  intentId String @id
+
+  intent Intent @relation(fields: [intentId], references: [id])
+}
+
+model PaymentIntent {
+  intentId String @id
+
+  item   Post   @relation(fields: [itemId], references: [id])
+  itemId String
+
+  price       String
+  currency    String
+  destination String
+
+  intent Intent @relation(fields: [intentId], references: [id])
+}

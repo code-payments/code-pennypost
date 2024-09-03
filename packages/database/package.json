@@ -1,0 +1,27 @@
+{
+  "name": "@code-pennypost/database",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/index.ts",
+  "scripts": {
+    "db:format": "prisma format",
+    "db:init": "prisma generate",
+    "db:migrate": "dotenv -e ../backend/.env -- npx prisma migrate dev --name init",
+    "db:studio": "dotenv -e ../backend/.env -- npx prisma studio",
+    "build": "tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@code-pennypost/api": "^1.0.0",
+    "@paralleldrive/cuid2": "^2.2.0",
+    "@prisma/client": "^5.8.1"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^7.4.2",
+    "prisma": "^5.8.1"
+  },
+  "trustedDependencies": [
+    "@prisma/client"
+  ]
+}

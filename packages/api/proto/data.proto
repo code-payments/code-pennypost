@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package api;
+
+service DataService {
+    rpc Upload(DataUploadRequest) returns (DataUploadResponse) {}
+
+    rpc GetPreviewPost(DataGetPreviewRequest) returns (DataGetPreviewResponse) {}
+    rpc GetFullPost(DataGetFullRequest) returns (DataGetFullResponse) {}
+}
+
+message Data {
+    string id = 1;
+    string owner_id = 3;
+    string key = 4;
+    bytes value = 5;
+    string hash = 6;
+}
+
+message DataFile {
+    string mime_type = 1;
+    bytes data = 2;
+}
+
+message DataUploadRequest {
+    DataFile file = 1;
+}
+
+message DataUploadResponse {
+    Result result = 1;
+    string id = 2;
+
+    enum Result {
+        OK = 0;
+        INVALID_REQUEST = 1;
+        UNKNOWN_ERROR = 2;
+    }
+}
+
+message DataGetPreviewRequest {
+    string id = 1;
+    string slug = 2;
+}
+
+message DataGetPreviewResponse {
+    Result result = 1;
+    string content = 2;
+
+    enum Result {
+        OK = 0;
+        INVALID_REQUEST = 1;
+        UNKNOWN_ERROR = 2;
+    }
+}
+
+message DataGetFullRequest {
+    string id = 1;
+    string slug = 2;
+}
+
+message DataGetFullResponse {
+    Result result = 1;
+    string content = 2;
+
+    enum Result {
+        OK = 0;
+        INVALID_REQUEST = 1;
+        UNKNOWN_ERROR = 2;
+        NOT_PURCHASED = 3;
+    }
+}

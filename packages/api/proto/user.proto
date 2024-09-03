@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package api;
+
+service UserService {
+    rpc Session(UserSessionRequest) returns (UserSessionResponse) {}
+    rpc Get(UserGetRequest) returns (UserGetResponse) {}
+    rpc GetPublicProfile(UserGetPublicProfileRequest) returns (UserGetPublicProfileResponse) {}
+    rpc Update(UserUpdateRequest) returns (UserUpdateResponse) {}
+}
+
+message User {
+    string id = 1;
+    string code_address = 2;
+
+    string name = 3;
+    string bio = 4;
+    bytes avatar = 5;
+}
+
+message UserSessionRequest {
+    string intent_id = 1;
+    string source = 2;
+}
+
+message UserSessionResponse {
+    Result result = 1;
+    string token = 2;
+
+    enum Result {
+        OK = 0;
+        INVALID_REQUEST = 1;
+        UNKNOWN_ERROR = 2;
+        NOT_FOUND = 3;
+    }
+}
+
+message UserGetRequest {
+}
+
+message UserGetResponse {
+    Result result = 1;
+    User user = 2;
+
+    enum Result {
+        OK = 0;
+        INVALID_REQUEST = 1;
+        UNKNOWN_ERROR = 2;
+        NOT_FOUND = 3;
+    }
+}
+
+message UserGetPublicProfileRequest {
+    string user_id = 1;
+}
+
+message UserGetPublicProfileResponse {
+    Result result = 1;
+    User user = 2;
+
+    enum Result {
+        OK = 0;
+        INVALID_REQUEST = 1;
+        UNKNOWN_ERROR = 2;
+        NOT_FOUND = 3;
+    }
+}
+
+message UserUpdateRequest {
+    string name = 1;
+    string bio = 2;
+    bytes avatar = 3;
+}
+
+message UserUpdateResponse {
+    Result result = 1;
+
+    enum Result {
+        OK = 0;
+        INVALID_REQUEST = 1;
+        UNKNOWN_ERROR = 2;
+        NOT_FOUND = 3;
+    }
+}

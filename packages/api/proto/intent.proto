@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package api;
+
+service IntentService {
+    rpc GetStatus(IntentGetStatusRequest) returns (IntentGetStatusResponse) {}
+}
+
+message Intent {
+    string id = 1;
+    string status = 2;
+    string client_secret = 3;
+    string related_user = 4;
+}
+
+message IntentGetStatusRequest {
+    string id = 1;
+}
+
+message IntentGetStatusResponse {
+    Result result = 1;
+    string status = 2;
+
+    enum Result {
+        OK = 0;
+        INVALID_REQUEST = 1;
+        UNKNOWN_ERROR = 2;
+    }
+}

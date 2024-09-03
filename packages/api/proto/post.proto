@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package api;
+
+service PostService {
+    rpc Create(PostCreateRequest) returns (PostCreateResponse) {}
+
+    rpc Get(PostGetRequest) returns (PostGetResponse) {}
+    rpc GetPaginated(PostGetPaginatedRequest) returns (PostGetPaginatedResponse) {}
+}
+
+message Post {
+    string id = 1;
+
+    string title = 2;
+    string short = 3;
+    string slug = 4;
+
+    string price = 5;
+    string payment_address = 6;
+
+    string owner_id = 7;
+    string content_id = 8;
+    string image_id = 9;
+
+    string created_at = 10;
+}
+
+message PostCreateRequest {
+    Post post = 1;
+    string content = 2;
+}
+
+message PostCreateResponse {
+    Result result = 1;
+    string id = 2;
+    string slug = 3;
+
+    enum Result {
+        OK = 0;
+        INVALID_REQUEST = 1;
+        UNKNOWN_ERROR = 2;
+        ALREADY_EXISTS = 3;
+    }
+}
+
+message PostGetRequest {
+    string id = 1;
+    string slug = 2;
+}
+
+message PostGetResponse {
+    Result result = 1;
+    Post post = 2;
+
+    enum Result {
+        OK = 0;
+        INVALID_REQUEST = 1;
+        UNKNOWN_ERROR = 2;
+        NOT_FOUND = 3;
+    }
+}
+
+
+message PostGetPaginatedRequest {
+    string owner_id = 1;
+    int32 page = 2;
+    int32 page_size = 3;
+}
+message PostGetPaginatedResponse {
+    Result result = 1;
+    repeated Post posts = 2;
+
+    enum Result {
+        OK = 0;
+        INVALID_REQUEST = 1;
+        UNKNOWN_ERROR = 2;
+    }
+}
