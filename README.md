@@ -7,7 +7,7 @@
 
 This repository contains the starter code for running your own version of Pennypost — a simple writing tool that empowers any writer to add a $0.25 paywall to their content using the Code SDK and app.
 
-Pennypost is intentionally simple. There were a **lot of** features we decided to leave out in order to make it easier to use as a foundation. We hope that this project will inspire the community to build new ways for content creators to monetize their work.
+Pennypost is intentionally simple. There were a lot of features we decided to leave out in order to make it easier to use as a foundation. We hope that this project will inspire the community to build new ways for content creators to monetize their work.
 
 ##  What is Code?
 
