@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import code from '@code-wallet/elements';
-import { CurrencyCode, isValidCurrency } from '@code-wallet/library';
 import { ref } from 'vue';
+import { CurrencyCode, isValidCurrency } from '@code-wallet/library';
+import { getTipIntentId } from '../../services/helpers/tip';
 
 const props = defineProps<{
+    item: string,
     destination: string,
     currency: string,
     amount: string,
@@ -16,16 +18,14 @@ if (!isValidCurrency(props.currency)) {
     throw new Error('Invalid payment currency provided');
 }
 
-const onClick = () => {
-    // This function is a bit of a hack, there are definitely more elegant ways
-    // to do this. This is just a quick example.
-
+const onClick = async () => {
     if (!el.value) {
         throw new Error('Failed to mount pay with code element');
     }
 
+    const { clientSecret } = await getTipIntentId(props.item, props.amount);
     const { page } = code.elements.create('page', {
-        mode: 'payment',
+        clientSecret,
         destination: props.destination,
         currency: props.currency as CurrencyCode,
         amount: parseFloat(props.amount),
@@ -35,15 +35,23 @@ const onClick = () => {
         throw new Error('Failed to create button');
     }
 
-    page.on('cancel', async () => { return emit('cancel'); });
-    page.on('error', async (event: any) => { return emit('error', event); });
+    page.on('cancel', async () => {
+        page.unmount();
+        return emit('cancel');
+    });
+    page.on('error', async (event: any) => {
+        page.unmount();
+        return emit('error', event); 
+    });
     page.on('success', async (event: any) => {
         page.unmount();
-
         const { intent } = event;
         return emit('success', intent);
     });
 
+    // What follows is a bit of a hack, there are definitely more elegant ways
+    // to do this. This is just a quick example.
+    
     const div = document.createElement('div');
     el.value.appendChild(div);
 

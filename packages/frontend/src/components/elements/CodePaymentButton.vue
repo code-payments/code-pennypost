@@ -2,9 +2,9 @@
 import code from '@code-wallet/elements';
 import { onMounted, ref } from 'vue';
 import { CurrencyCode, isValidCurrency } from '@code-wallet/library';
+import { getPaymentIntentId } from '../../services/helpers/payment';
 
 const props = defineProps<{
-    createIntent: (val: string) => Promise<{ clientSecret: string }>,
     item: string,
     destination: string,
     currency: string,
@@ -38,7 +38,7 @@ button.on('success', async (event: any) => {
 });
 
 button.on('invoke', async () => {
-    const { clientSecret } = await props.createIntent(props.item);
+    const { clientSecret } = await getPaymentIntentId(props.item);
 
     // A bit of a hack to get the current scroll position into the success URL.
     // Ideally, we'd emit an 'invoke' event to get options from the parent
