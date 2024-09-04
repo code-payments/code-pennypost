@@ -107,27 +107,32 @@ const getFull = async (req: Request, res: Response) => {
       return ErrUnexpectedError(res);
     }
 
-    // TODO: Need a better approach to this. Fetching all intents is not ideal
-    const payments = await db.resultOrNull(db.payment.getPaymentIntentsForItemAndOwner)({
-      itemId: post.id,
-      codeAddress: user.codeAddress,
-    });
+    // Check if the user is the owner of the post
+    if (purchaserId != post.ownerId) {
 
-    if (!payments || payments.length === 0) {
-      return ErrPaymentNotFound(res);
-    }
+      // TODO: Need a better approach to this. Fetching all intents is not ideal
+      const payments = await db.resultOrNull(db.payment.getPaymentIntentsForItemAndOwner)({
+        itemId: post.id,
+        codeAddress: user.codeAddress,
+      });
 
-    // Check if any of the intents are completed
-    let found = false;
-    for (const payment of payments) {
-      const intent = await getAndUpdateIntent(payment.intentId);
-      if (intent.status === db.intent.IntentStatus.COMPLETED) {
-        found = true;
-        break;
+      if (!payments || payments.length === 0) {
+        return ErrPaymentNotFound(res);
       }
-    }
-    if (!found) {
-      return ErrPaymentNotCompleted(res);
+
+      // Check if any of the intents are completed
+      let found = false;
+      for (const payment of payments) {
+        const intent = await getAndUpdateIntent(payment.intentId);
+        if (intent.status === db.intent.IntentStatus.COMPLETED) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        return ErrPaymentNotCompleted(res);
+      }
+
     }
     
     // Find the article data
