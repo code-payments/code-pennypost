@@ -14,6 +14,7 @@ import { ClientOnly } from '../ClientOnly';
 import GenericLayout from '../layouts/GenericLayout.vue';
 import SectionHeader from '../sections/SectionHeader.vue';
 import SectionWriteOwn from '../sections/SectionWriteOwn.vue';
+import SectionTipAuthor from '../sections/SectionTipAuthor.vue';
 import CodePaymentButton from '../elements/CodePaymentButton.vue';
 
 const props = defineProps({
@@ -150,6 +151,9 @@ onMounted(async () => {
       <div>
         <div v-if="!state.isPreview">
           <SectionWriteOwn />
+          <SectionTipAuthor destination="E8otxw1CVX9bfyddKu3ZB3BVLa4VVF9J7CTPdnUwT9jR">
+            Tip The Author
+          </SectionTipAuthor>
         </div>
 
         <div v-else class="w-full max-w-lg mx-auto">
