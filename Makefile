@@ -98,3 +98,8 @@ install:
 	fi
 
 	cd packages/database && npm run db:migrate
+
+.PHONY: verifier-key
+verifier-key:
+	@echo "Generating verifier key"
+	cd packages/backend && npm run script:gen-secret

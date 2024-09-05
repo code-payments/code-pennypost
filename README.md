@@ -28,8 +28,14 @@ the packages with your own implementation and language if you'd like.
 
 ## Quick Start
 
-You will need a postgres database running locally. You can use the following
-command to start a postgres database using docker:
+To run Pennypost locally, you will need to have the following dependencies:
+
+* [Docker](https://docs.docker.com/get-docker/)
+* [Node.js](https://nodejs.org/en/download/)
+* [Bun.js](https://bunjs.dev/)
+
+Additionally, you will need a postgres database running somewhere. You can use
+the following command to start a postgres database using docker:
 
 ```bash
 docker run --name my-postgres -e POSTGRES_PASSWORD=mysecretpassword -p 5432:5432 -d postgres
@@ -49,6 +55,44 @@ To run Pennypost, use the following commands:
 ```bash
 make install
 make dev
+```
+
+## Deployment
+
+To deploy Pennypost, you will need to compile the frontend assets and optionally
+build a docker image containing everything. You can do all of this by running
+the following command:
+
+```bash
+make build
+```
+
+Then you can run the docker image you've just created using the following
+command:
+
+```bash
+make run-local
+```
+
+Additionally, you'll need your own `verifier key`. This is a private key value.
+This key is used to sign the payment requests that are sent to the Code
+services. It allows us to verify that you actually own the domain name from
+where the request is coming from. 
+
+This codebase ships with the `example-getcode.com` verifier key. You should
+replace this key with your own key once you have a domain name and have the
+ability to host a json file at
+`https://example.com/.well-known/code-payments.json`. This codebase will
+automatically do this for you. 
+
+**Important:** The `https` is required for security reasons, so make sure you have
+an SSL certificate installed on your server. Additionally, subdomains are not
+supported.
+
+You can generate a `verifier key` by running the following command:
+
+```bash
+make verifier-key
 ```
 
 ## Getting Help

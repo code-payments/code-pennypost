@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "bun src/server.ts",
     "preview": "NODE_ENV=production bun src/server.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "script:gen-secret": "bun scripts/verifier-keygen.ts"
   },
   "author": "",
   "license": "ISC",
