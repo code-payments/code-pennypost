@@ -33,6 +33,7 @@ To run Pennypost locally, you will need to have the following dependencies:
 * [Docker](https://docs.docker.com/get-docker/)
 * [Node.js](https://nodejs.org/en/download/)
 * [Bun.js](https://bun.sh/)
+* [Sharp](https://sharp.pixelplumbing.com/install) (no manual steps should be required here for most people, the codebase will install this automatically)
 
 Additionally, you will need a postgres database running somewhere. You can use
 the following command to start a postgres database using docker:
