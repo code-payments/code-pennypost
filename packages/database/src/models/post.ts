@@ -18,6 +18,7 @@ const toProto = (post: Post) : proto.Post => {
 
         price: post.price,
         paymentAddress: post.paymentAddress,
+        hasPaywall: post.hasPaywall,
 
         createdAt: post.createdAt.toISOString(),
     });
@@ -31,6 +32,7 @@ interface CreatePostOpts {
   slug: string;
   price: string;
   paymentAddress: string;
+  hasPaywall: boolean;
 }
 
 async function createPost(opt: CreatePostOpts, content: string): Promise<Post> {
@@ -47,6 +49,7 @@ async function createPost(opt: CreatePostOpts, content: string): Promise<Post> {
             price: opt.price,
             slug: opt.slug,
             paymentAddress: opt.paymentAddress,
+            hasPaywall: opt.hasPaywall,
 
             image: opt.imageId ? { connect: { id: opt.imageId, }, } : undefined,
 

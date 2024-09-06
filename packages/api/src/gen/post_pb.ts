@@ -41,22 +41,27 @@ export class Post extends Message<Post> {
   paymentAddress = "";
 
   /**
-   * @generated from field: string owner_id = 7;
+   * @generated from field: bool has_paywall = 7;
+   */
+  hasPaywall = false;
+
+  /**
+   * @generated from field: string owner_id = 8;
    */
   ownerId = "";
 
   /**
-   * @generated from field: string content_id = 8;
+   * @generated from field: string content_id = 9;
    */
   contentId = "";
 
   /**
-   * @generated from field: string image_id = 9;
+   * @generated from field: string image_id = 10;
    */
   imageId = "";
 
   /**
-   * @generated from field: string created_at = 10;
+   * @generated from field: string created_at = 11;
    */
   createdAt = "";
 
@@ -74,10 +79,11 @@ export class Post extends Message<Post> {
     { no: 4, name: "slug", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 5, name: "price", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 6, name: "payment_address", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 7, name: "owner_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 8, name: "content_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 9, name: "image_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 10, name: "created_at", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 7, name: "has_paywall", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 8, name: "owner_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 9, name: "content_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 10, name: "image_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 11, name: "created_at", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Post {

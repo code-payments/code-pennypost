@@ -4,20 +4,26 @@ import { useRouter } from 'vue-router';
 import { isLoggedIn } from '../../state/account';
 import { createPost } from '../../services/helpers/post';
 import { uploadFile } from '../../services/helpers/data';
-import { isContentEmpty } from '../../utils/html';
+import { hasPaywallTag, isContentEmpty, isTitleEmpty } from '../../utils/html';
 
 import SectionHeader from '../sections/SectionHeader.vue';
 import EditorView from '../sections/EditorView.vue';
 import GenericLayout from '../layouts/GenericLayout.vue';
 
 import DialogPublishArticle from '../dialogs/DialogPublishArticle.vue';
+import DialogPublishWithoutPaywall from '../dialogs/DialogPublishWithoutPaywall.vue';
 import DialogEmptyArticle from '../dialogs/DialogEmptyArticle.vue';
+import DialogEmptyTitle from '../dialogs/DialogEmptyTitle.vue';
 
 const router = useRouter();
 const state = reactive({
   content: '',
+
   isPublishDialogOpen: false,
+  isPublishWithoutPaywallDialogOpen: false,
   isEmptyDialogOpen: false,
+  isEmptyTitleDialogOpen: false,
+
   pendingUploads: [] as Promise<any>[],
   uploadedFiles: [] as [string, string][],
 });
@@ -36,10 +42,18 @@ const onUpload = async (file: {blob: Blob, url: string}) => {
 
 const onPost = async () => {
   if (isContentEmpty(state.content)) {
-    state.isEmptyDialogOpen = true;
-  } else {
-    state.isPublishDialogOpen = true;
+    return state.isEmptyDialogOpen = true;
   }
+
+  if (isTitleEmpty(state.content)) {
+    return state.isEmptyTitleDialogOpen = true;
+  }
+
+  if (hasPaywallTag(state.content)) {
+    return state.isPublishDialogOpen = true;
+  } 
+
+  state.isPublishWithoutPaywallDialogOpen = true;
 }
 
 const onPublish = async () => {
@@ -99,7 +113,9 @@ onMounted(() => {
   </GenericLayout>
 
   <DialogPublishArticle v-if="state.isPublishDialogOpen" @close="state.isPublishDialogOpen = false" @publish="onPublish" />
+  <DialogPublishWithoutPaywall v-if="state.isPublishWithoutPaywallDialogOpen" @close="state.isPublishWithoutPaywallDialogOpen = false" @publish="onPublish" />
   <DialogEmptyArticle v-if="state.isEmptyDialogOpen" @close="state.isEmptyDialogOpen = false" />
+  <DialogEmptyTitle v-if="state.isEmptyTitleDialogOpen" @close="state.isEmptyTitleDialogOpen = false" />
 </template>
 
 <style>

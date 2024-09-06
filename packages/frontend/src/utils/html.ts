@@ -1,7 +1,28 @@
-function isContentEmpty(html: string): boolean {
+function getTextContent(html: string): string {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     const text = doc.body.textContent;
-    return text === null || text.trim() === '';
+    return text ? text.trim() : '';
+}
+
+function getTitleContent(html: string): string {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const title = doc.querySelector('h1');
+    return title ? title.innerText : '';
+}
+
+function isContentEmpty(html: string): boolean {
+    const text = getTextContent(html);
+    return text.length === 0;
+}
+
+function isTitleEmpty(html: string): boolean {
+    const title = getTitleContent(html);
+    return title.length === 0;
+}
+
+function hasPaywallTag(html: string): boolean {
+    const text = getTextContent(html);
+    return text.includes('[paywall]');
 }
 
 async function extractDataUrls(html: string): Promise<string[]> {
@@ -31,7 +52,11 @@ async function convertDataUrlToBlob(dataUrl: string): Promise<Blob> {
 
 
 export {
+    getTextContent,
+    getTitleContent,
     isContentEmpty,
+    isTitleEmpty,
+    hasPaywallTag,
     extractDataUrls,
     convertDataUrlToBlob,
 }

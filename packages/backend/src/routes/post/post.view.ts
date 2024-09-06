@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { 
     getOwnerProfileForPost,
     getPostBySlug,
-    getPreviewForPost
+    getContentForPost
 } from '../../models/post';
 import { useConfig } from '../../config';
 
@@ -15,7 +15,7 @@ async function renderPost(req: Request, res: Response) {
 
   try {
     const post = await getPostBySlug(slug);
-    const preview = await getPreviewForPost(post);
+    const content = await getContentForPost(post);
     const owner = await getOwnerProfileForPost(post);
 
     // Uncomment the following line to use the default pennypost image,
@@ -34,7 +34,7 @@ async function renderPost(req: Request, res: Response) {
       title: post?.title ?? 'Pennypost',
       post: post.toJsonString(),
       owner: owner.toJsonString(),
-      preview,
+      content,
       meta,
     });
   } catch (e) {

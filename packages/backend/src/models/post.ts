@@ -1,6 +1,6 @@
 import { Post } from "@code-pennypost/api";
 import * as db from "@code-pennypost/database";
-import { generatePreview, splitTitleFromContent } from "../utils/html";
+import { getFreeContent, removePaywallTag, splitTitleFromContent } from "../utils/html";
 
 const ErrPostNotFound = () => new Error('Post not found');
 const ErrPostOwnerNotFound = () => new Error('Post owner not found');
@@ -36,9 +36,23 @@ async function getPreviewForPost(post: Post) {
 
     return {
         title,
-        html: generatePreview(html),
+        html: getFreeContent(html),
     }
 }
+
+async function getContentForPost(post: Post, hasPaid: boolean = false) {
+    let content;
+    if (post.hasPaywall && !hasPaid) {
+        content = await getPreviewForPost(post);
+    } else {
+        content = await getFullContentForPost(post);
+    }
+
+    content.html = removePaywallTag(content.html);
+
+    return content;
+}
+
 
 async function getOwnerProfileForPost(post: Post) {
     const user = await db.resultOrNull(db.user.getUserById)(post.ownerId);
@@ -51,7 +65,6 @@ async function getOwnerProfileForPost(post: Post) {
 
 export {
     getPostBySlug,
-    getPreviewForPost,
-    getFullContentForPost,
+    getContentForPost,
     getOwnerProfileForPost,
 }

@@ -40,8 +40,18 @@ const publish = () => {
               <div>
                 <div class="mt-3 text-center">
                   <DialogTitle as="h3" class="mx-auto max-w-xs text-xl font-semibold tracking-tight text-[#07204E]">
-                    Are you ready to post?
+                    Publish this article for free?
                   </DialogTitle>
+
+                  <p class="mt-3 text-sm text-gray-500">
+                    To add a paywall add the <code class="
+                    mx-0.5 text-[#34AA4E] bg-gray-100 p-1 font-mono
+                    font-semibold border border-gray-200
+                    rounded-md">[paywall]</code> tag anywhere in your article
+                    where you want the paywall to appear.  Otherwise, your
+                    article will appear free, but people will still be able to
+                    tip you.
+                  </p>
                 </div>
               </div>
 
