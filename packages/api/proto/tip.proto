@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package api;
+
+service TipIntentService {
+    rpc Create(TipIntentCreateRequest) returns (TipIntentCreateResponse) {}
+}
+
+message TipIntent {
+    string intent_id = 1;
+    string item_id = 2;
+
+    string destination = 4;
+    string amount = 5;
+    string currency = 6;
+}
+
+message TipIntentCreateRequest {
+    string item_id = 1;
+    string amount = 2;
+}
+
+message TipIntentCreateResponse {
+    Result result = 1;
+    string client_secret = 2;
+
+    enum Result {
+        OK = 0;
+        INVALID_REQUEST = 1;
+        UNKNOWN_ERROR = 2;
+        ALREADY_EXISTS = 3;
+    }
+}

@@ -23,6 +23,7 @@ app.use(templateMiddleware(renderer));
 app.use('/post', routes.post);
 app.use('/data', routes.data);
 app.use('/payment', routes.payment);
+app.use('/tip', routes.tip);
 app.use('/login', routes.login);
 app.use('/user', routes.user);
 

@@ -64,6 +64,7 @@ model Post {
   imageId String?
 
   paymentIntent PaymentIntent[]
+  tipIntent     TipIntent[]
 }
 
 model Data {
@@ -93,6 +94,7 @@ model Intent {
 
   loginIntent   LoginIntent?
   paymentIntent PaymentIntent?
+  tipIntent     TipIntent?
 
   session Session[]
 }
@@ -110,6 +112,19 @@ model PaymentIntent {
   itemId String
 
   price       String
+  currency    String
+  destination String
+
+  intent Intent @relation(fields: [intentId], references: [id])
+}
+
+model TipIntent {
+  intentId String @id
+
+  item   Post   @relation(fields: [itemId], references: [id])
+  itemId String
+
+  amount      String
   currency    String
   destination String
 

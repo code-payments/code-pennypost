@@ -8,12 +8,12 @@ import { useConfig } from '../../config';
 import { isLoggedIn, login } from '../../state/account';
 import { getLocalizedTime } from '../../utils/time';
 import { getFullContent } from '../../services/helpers/data';
-import { getPaymentIntentId } from '../../services/helpers/payment';
 import { ClientOnly } from '../ClientOnly';
 
 import GenericLayout from '../layouts/GenericLayout.vue';
 import SectionHeader from '../sections/SectionHeader.vue';
-import SectionWriteOwn from '../sections/SectionWriteOwn.vue';
+import SectionTipAuthor from '../sections/SectionTipAuthor.vue';
+//import SectionWriteOwn from '../sections/SectionWriteOwn.vue';
 import CodePaymentButton from '../elements/CodePaymentButton.vue';
 
 const props = defineProps({
@@ -149,7 +149,14 @@ onMounted(async () => {
     <template #cta>
       <div>
         <div v-if="!state.isPreview">
+          <!-- 
           <SectionWriteOwn />
+          -->
+          <SectionTipAuthor 
+            :item="state.post.id"
+            :destination="state.post.paymentAddress">
+            Tip The Author
+          </SectionTipAuthor>
         </div>
 
         <div v-else class="w-full max-w-lg mx-auto">
@@ -162,7 +169,6 @@ onMounted(async () => {
 
               <ClientOnly>
                 <CodePaymentButton v-if="state.post"
-                  :create-intent="getPaymentIntentId"
                   :item="state.post.id"
                   :amount="state.post.price"
                   :destination="state.post.paymentAddress"
