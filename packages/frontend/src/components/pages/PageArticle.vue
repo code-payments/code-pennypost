@@ -13,7 +13,6 @@ import { ClientOnly } from '../ClientOnly';
 import GenericLayout from '../layouts/GenericLayout.vue';
 import SectionHeader from '../sections/SectionHeader.vue';
 import SectionTipAuthor from '../sections/SectionTipAuthor.vue';
-//import SectionWriteOwn from '../sections/SectionWriteOwn.vue';
 import CodePaymentButton from '../elements/CodePaymentButton.vue';
 
 const props = defineProps({
@@ -27,8 +26,9 @@ const ctx = useContext();
 const state = reactive({
   post: proto.Post.fromJsonString(ctx.post),
   owner: proto.User.fromJsonString(ctx.owner),
-  content: ctx.preview,
-  isPreview: true,
+  content: ctx.content,
+
+  hasUnlocked: false,
   previewHeight: 0,
 });
 const el = ref<HTMLElement | null>(null);
@@ -47,7 +47,7 @@ const unlock = async () => {
       if (res.result == proto.DataGetFullResponse_Result.OK) {
 
         setTimeout(() => {
-          state.isPreview = false;
+          state.hasUnlocked = true;
           state.previewHeight = el.value?.clientHeight || 0;
           state.content.html = res.content;
         }, 1000);
@@ -68,25 +68,24 @@ const scroll = () => {
 
 const getContainerStyle = (): CSSProperties => {
   const height = 300;
-  const gradientEnd = state.isPreview ? '100%' : `${height}px`;
   const background = `
     linear-gradient(180deg, 
     rgba(2, 0, 36, 0) 0,
     rgba(255, 255, 255, 0) ${height / 2}px,
-    rgba(255, 255, 255, 1) ${gradientEnd},
+    rgba(255, 255, 255, 1) ${height}px,
     rgba(255, 255, 255, 1) 100%)`;
 
-  if (state.isPreview) {
-    return {
-      background,
-      height: `${height}px`,
-      top: 'initial',
-    };
-  } else {
+  if (!state.post.hasPaywall || state.hasUnlocked) {
     const top = Math.abs(state.previewHeight - height);
     return {
       background,
       top: `${top}px`,
+    };
+  } else {
+    return {
+      background,
+      height: `${height}px`,
+      top: 'initial',
     };
   }
 }
@@ -140,7 +139,7 @@ onMounted(async () => {
           <div 
             class="absolute inset-0 pointer-events-none"
             :style="getContainerStyle()" 
-            :class="{'fade-out': !state.isPreview}"></div>
+            :class="{'fade-out': !state.post.hasPaywall || state.hasUnlocked}"></div>
         </div>
 
       </div>
@@ -148,14 +147,11 @@ onMounted(async () => {
 
     <template #cta>
       <div>
-        <div v-if="!state.isPreview">
-          <!-- 
-          <SectionWriteOwn />
-          -->
+        <div v-if="!state.post.hasPaywall || state.hasUnlocked">
           <SectionTipAuthor 
             :item="state.post.id"
             :destination="state.post.paymentAddress">
-            Tip The Author
+            Tip the Author
           </SectionTipAuthor>
         </div>
 

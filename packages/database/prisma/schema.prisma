@@ -56,6 +56,7 @@ model Post {
 
   price          String
   paymentAddress String
+  hasPaywall     Boolean @default(true)
 
   content   Data   @relation(fields: [contentId], references: [id], name: "post_content")
   contentId String

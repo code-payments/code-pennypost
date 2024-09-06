@@ -1,7 +1,6 @@
 <script setup lang="ts">
     import { onMounted, ref } from 'vue';
     import { CheckIcon } from '@heroicons/vue/24/outline';
-    import { useConfig } from '../../config';
 
     import GenericLayout from '../layouts/GenericLayout.vue';
     import SectionHeader from '../sections/SectionHeader.vue';
@@ -11,7 +10,6 @@
         title: { type: String, required: true, },
     });
 
-    const config = useConfig();
     const el = ref<HTMLInputElement | null>(null);
 
     const url = ref('');
@@ -66,7 +64,7 @@
                     Your Post Is Live!
                 </h1>
                 <p class="mt-6 text-base leading-6 text-[#07204E]">
-                    Share the link below to access your post. A ${{ config.defaultPrice }} micropaywall has been automatically added.
+                    Share the link below to access your post. Your article is private to those that have a link to it. It is up to you to share your article with the world.
                 </p>
 
                 <div class="mt-5 relative sm:max-w-sm sm:mx-auto">

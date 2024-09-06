@@ -5,7 +5,7 @@ import { Request, Response } from "express";
 import { useService } from "../../service";
 import { useConfig } from "../../config";
 import { getTimelockStatePda, getTimelockVaultPda } from "../../utils/pda";
-import { extractFirstImage, extractTitleAndShortText } from "../../utils/html";
+import { extractFirstImage, extractTitleAndShortText, hasPaywall, removePaywallTag } from "../../utils/html";
 import { generateSlug } from "../../utils/slug";
 import { getOrCreateImageIdFromUrl } from "../../models/data";
 
@@ -41,6 +41,7 @@ const create = async (req: Request, res: Response) => {
   post.ownerId = req.user.id;
   post.paymentAddress = paymentAddress;
   post.price = `${config.defaultCost}`;
+  post.hasPaywall = hasPaywall(content);
   post.title = title;
   post.short = short;
   post.slug = slug;

@@ -65,7 +65,7 @@ async function splitTitleFromContent(html: string): Promise<{ title: string, htm
     return { title, html: content };
 }
 
-function generatePreview(html: string): string {
+function splitHtmlInHalf(html: string): string {
     // Okay, so this is actually a pretty complicated problem. It isn't as
     // simple as just cutting the text in half, because we want to maintain the
     // structure of the HTML. We can't just split the text in half because we
@@ -77,6 +77,8 @@ function generatePreview(html: string): string {
 
     // I highly recommend not trying to "fix" this function. Let it be as it is
     // as a reminder to do it properly on the UX side :)
+
+    // Note: Use getFreeContent() instead if you can
 
     const $ = cheerio.load(html);
     const allContentElements = $('body').children();
@@ -115,11 +117,34 @@ function generatePreview(html: string): string {
     return result;
 }
 
+function hasPaywall(html: string): boolean {
+    return html.includes('[paywall]');
+}
+
+function getFreeContent(html: string): string {
+    // We're going to look for the first [paywall] tag and return the content up
+    // to that point. Any open tags will be closed.
+
+    const freeContent = html.split('[paywall]')[0];
+    const $ = cheerio.load(freeContent, { xmlMode: true });
+
+    return $.html();
+}
+
+function removePaywallTag(html: string): string {
+    // This is a simple function that removes the [paywall] tag from the content.
+    // Note: This is a very naive implementation...
+    return html.replace('[paywall]', '');
+}
+
 export { 
     convertDataUrlToBuffer,
     extractDataUrls,
     extractFirstImage,
     extractTitleAndShortText,
-    generatePreview,
+    hasPaywall,
+    removePaywallTag,
+    getFreeContent,
+    splitHtmlInHalf,
     splitTitleFromContent,
 };

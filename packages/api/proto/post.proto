@@ -18,12 +18,13 @@ message Post {
 
     string price = 5;
     string payment_address = 6;
+    bool has_paywall = 7;
 
-    string owner_id = 7;
-    string content_id = 8;
-    string image_id = 9;
+    string owner_id = 8;
+    string content_id = 9;
+    string image_id = 10;
 
-    string created_at = 10;
+    string created_at = 11;
 }
 
 message PostCreateRequest {
